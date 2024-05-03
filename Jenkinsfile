@@ -13,7 +13,6 @@ pipeline {
         DOCKER_PASS = 'dockerhub'
         IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-        
     }
     
     stages {
@@ -51,28 +50,17 @@ pipeline {
             }
         }
 
-        stage("Docker login") {
-            steps {
-                script {
-                    docker.withRegistry('https://hub.docker.com/', 'dockerhub') {
-   
-                      }
-
-                    }
-                }
-            }
- 
-
         stage("Build & Push Docker Image") {
             steps {
                 script {
-                    docker.withRegistry('',DOCKER_PASS) {
-                        docker_image = docker.build "${IMAGE_NAME}"
-                    }
+                    // Authenticate with Docker Hub using stored credentials
+                    withDockerRegistry(credentialsId: 'dockerhub') {
+                        // Build the Docker image
+                        def dockerImage = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
 
-                    docker.withRegistry('',DOCKER_PASS) {
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push('latest')
+                        // Push the Docker image to the registry
+                        dockerImage.push()
+                        dockerImage.push('latest')
                     }
                 }
             }
