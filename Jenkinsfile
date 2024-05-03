@@ -51,6 +51,18 @@ pipeline {
             }
         }
 
+        stage("Docker login") {
+            steps {
+                script {
+                    docker.withRegistry('https://hub.docker.com/', 'dockerhub') {
+   
+                      }
+
+                    }
+                }
+            }
+ 
+
         stage("Build & Push Docker Image") {
             steps {
                 script {
