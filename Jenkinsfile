@@ -50,15 +50,25 @@ pipeline {
             }
         }
 
-        stage("Build & Push Docker Image") {
+        stage("Build Docker Image") {
             steps {
                 script {
                     // Authenticate with Docker Hub using stored credentials
                     withDockerRegistry(credentialsId: 'dockerhub') {
                         // Build the Docker image
                         def dockerImage = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                    }
+                }
+            }
+        }
 
+        stage("Push Docker Image") {
+            steps {
+                script {
+                    // Authenticate with Docker Hub using stored credentials
+                    withDockerRegistry(credentialsId: 'dockerhub') {
                         // Push the Docker image to the registry
+                        def dockerImage = docker.image("${IMAGE_NAME}:${IMAGE_TAG}")
                         dockerImage.push()
                         dockerImage.push('latest')
                     }
@@ -69,20 +79,21 @@ pipeline {
         stage("Trivy Scan") {
            steps {
                script {
-	            sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image samanthav1/register-app-pipeline:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+                    sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image samanthav1/register-app-pipeline:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
                }
            }
        }
-	post {
-        failure {
-            // Send email notification on failure
-            emailext(
-                to: 'samantha.v@terralogic.com',
-                subject: 'Jenkins Pipeline Failed',
-                body: "Jenkins pipeline ${env.JOB_NAME} failed. Please check console output for details.",
-                attachLog: true
-            )
+	   
+       post {
+            failure {
+                // Send email notification on failure
+                emailext(
+                    to: 'samantha.v@terralogic.com',
+                    subject: 'Jenkins Pipeline Failed',
+                    body: "Jenkins pipeline ${env.JOB_NAME} failed. Please check console output for details.",
+                    attachLog: true
+                )
+            }
         }
-
     }
 }
