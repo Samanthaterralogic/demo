@@ -83,17 +83,17 @@ pipeline {
                }
            }
        }
-	   
-       post {
-            failure {
-                // Send email notification on failure
-                emailext(
-                    to: 'samantha.v@terralogic.com',
-                    subject: 'Jenkins Pipeline Failed',
-                    body: "Jenkins pipeline ${env.JOB_NAME} failed. Please check console output for details.",
-                    attachLog: true
-                )
-            }
+    }
+	
+    post {
+        failure {
+            // Send email notification on failure
+            emailext(
+                to: 'samantha.v@terralogic.com',
+                subject: 'Jenkins Pipeline Failed',
+                body: "Jenkins pipeline ${env.JOB_NAME} failed. Please check console output for details.",
+                attachLog: true
+            )
         }
     }
 }
