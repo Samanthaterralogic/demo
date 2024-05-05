@@ -79,28 +79,4 @@ pipeline {
         stage("Trivy Scan") {
            steps {
                script {
-                    sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image samanthav1/register-app-pipeline:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
-               }
-           }
-       }
-    }
-    
-    post {
-        always {
-            // Send email notification
-            emailext(
-                subject: "Pipeline Status: ${currentBuild.result}",
-                body: '''<html>
-                            <body>
-                                <p>Build Status: ${currentBuild.result}</p>
-                                <p>Build Number: ${currentBuild.number}</p>
-                            </body>
-                         </html>''',
-                to: 'samveena2023@gmail.com',
-                from: 'jenkins@example.com',
-                replyTo: 'jenkins@example.com',
-                contentType: 'text/html'
-            )
-        }
-    }
-}
+                    sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/triv
