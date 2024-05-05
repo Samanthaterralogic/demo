@@ -84,23 +84,22 @@ pipeline {
            }
        }
     }
-	
+    
     post {
         always {
-            // Send email notification on failure
+            // Send email notification
             emailext(
                 subject: "Pipeline Status: ${currentBuild.result}",
-		body: '''<html>
+                body: '''<html>
                             <body>
-			        <p>Build Status: ${currentBuild.result}</p>
-	                        <p>Build Number: ${currentBuild.number}</p>
-	                    </body>
-		         </html>''',
-		    
+                                <p>Build Status: ${currentBuild.result}</p>
+                                <p>Build Number: ${currentBuild.number}</p>
+                            </body>
+                         </html>''',
                 to: 'samveena2023@gmail.com',
-		from:  'jenkins@example.com',
-                replyTo:  'jenkins@example.com',
-                mineType:  'text/html'
+                from: 'jenkins@example.com',
+                replyTo: 'jenkins@example.com',
+                contentType: 'text/html'
             )
         }
     }
