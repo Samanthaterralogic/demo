@@ -99,7 +99,7 @@ pipeline {
                 to: 'samveena2023@gmail.com',
                 from: 'jenkins@example.com',
                 replyTo: 'jenkins@example.com',
-                contentType: 'text/html'
+                mimiType: 'text/html'
             )
         }
     }
