@@ -86,13 +86,21 @@ pipeline {
     }
 	
     post {
-        failure {
+        always {
             // Send email notification on failure
             emailext(
+                subject: "Pipeline Status: ${currentBuild.result}",
+		body: '''<html>
+                            <body>
+			        <p>Build Status: ${currentBuild.result}</p>
+	                        <p>Build Number: ${currentBuild.number}</p>
+	                    </body>
+		         </html>''',
+		    
                 to: 'samveena2023@gmail.com',
-                subject: 'Jenkins Pipeline Failed',
-                body: "Jenkins pipeline ${env.JOB_NAME} failed. Please check console output for details.",
-                attachLog: true
+		from:  'jenkins@example.com',
+                replyTo:  'jenkins@example.com',
+                mineType:  'text/html'
             )
         }
     }
