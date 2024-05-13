@@ -84,13 +84,15 @@ pipeline {
            }
        }
 
-        stage("Deploy to k8s") {
-           steps {
-               script {
-                    sh ('')
-               }
-           }
-       }
+        stage('Deploy') {
+            steps {
+                // Assuming your Kubernetes manifest files are in the same directory
+                script {
+                    sh 'kubectl apply -f cd/service.yaml'
+                    sh 'kubectl apply -f cd/deployment.yaml'
+                }
+            }
+        }
 
         
     }
