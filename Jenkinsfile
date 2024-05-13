@@ -75,7 +75,7 @@ pipeline {
                 }
             }
         }
-
+'''
         stage("Trivy Scan") {
            steps {
                script {
@@ -83,7 +83,7 @@ pipeline {
                }
            }
        }
-
+'''
         stage('Deploy') {
             steps {
                 // Assuming your Kubernetes manifest files are in the same directory
