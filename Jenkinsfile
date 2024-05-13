@@ -76,17 +76,15 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                // Assuming your Kubernetes manifest files are in the same directory
-                script {
-                    
-                    sh 'kubectl apply -f /cd/deploy.yaml'
-                    sh 'kubectl apply -f /cd/cd-service.yaml'
-                }
+        stage('Deploy To Kubernetes') {
+           steps {
+               script {
+                   withKubeConfig(caCertificate: '', clusterName: 'minikube', contextName: 'context_info', credentialsId: 'kubernetes', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.49.2:8443') {
+                       sh "kubectl apply -f deployment-service.yaml"
             }
         }
     }
+}
 
         
 
