@@ -80,7 +80,7 @@ pipeline {
         stage('Deploy To Kubernetes') {
            steps {
                script {
-                   kubeconfig(caCertificate: '', clusterName: 'minikube', contextName: 'context_info', credentialsId: 'kubernetes', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.49.2:8443') {
+                   kubeconfig(caCertificate: '', clusterName: 'minikube', contextName: 'context_info', credentialsId: 'jenkins-secret', namespace: 'default', restrictKubeConfigAccess: false, serverUrl: 'https://192.168.49.2:8443') {
                        sh "kubectl apply -f /cd/deploy.yaml"
                        sh "kubectl apply -f /cd/cd-service.yaml"
                        
