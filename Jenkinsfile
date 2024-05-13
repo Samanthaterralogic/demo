@@ -88,9 +88,9 @@ pipeline {
             steps {
                 // Assuming your Kubernetes manifest files are in the same directory
                 script {
-                    sh 'cd /cd
-                    sh 'kubectl apply -f deploy.yaml'
-                    sh 'kubectl apply -f cd-service.yaml'
+                    
+                    sh 'kubectl apply -f /cd/deploy.yaml'
+                    sh 'kubectl apply -f /cd/cd-service.yaml'
                 }
             }
         }
