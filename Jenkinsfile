@@ -75,15 +75,7 @@ pipeline {
                 }
             }
         }
-'''
-        stage("Trivy Scan") {
-           steps {
-               script {
-                    sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image samanthav1/register-app-pipeline:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
-               }
-           }
-       }
-'''
+
         stage('Deploy') {
             steps {
                 // Assuming your Kubernetes manifest files are in the same directory
